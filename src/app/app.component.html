@@ -1,0 +1,58 @@
+<mat-toolbar color="primary">
+  <span>MY KANBAN</span>
+</mat-toolbar>
+
+<div class="content-wrapper">
+  <button class="btn" mat-button (click)="newTask()">
+    <mat-icon>add</mat-icon> New Task
+  </button>
+  <div class="container-wrapper">
+    <div class="container">
+      <h2>To do</h2>
+      <mat-card
+        cdkDropList
+        id="todo"
+        #toDoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[inProgressList, doneList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+
+        <p class="empty-label" *ngIf="todo.length === 0">There is nothing to do.</p>
+        <app-task *ngFor="let task of todo" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>In progress</h2>
+      <mat-card
+        cdkDropList
+        id="inProgress"
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="inProgress"
+        [cdkDropListConnectedTo]="[toDoList, doneList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+
+        <p class="empty-label" *ngIf="inProgress.length === 0">There is no task in progress.</p>
+        <app-task *ngFor="let task of inProgress" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+
+    <div class="container">
+      <h2>Done</h2>
+      <mat-card
+        cdkDropList
+        id="done"
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[toDoList, inProgressList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list">
+
+        <p class="empty-label" *ngIf="done.length === 0">There is no completed task.</p>
+        <app-task *ngFor="let task of done" cdkDrag [task]="task"></app-task>
+      </mat-card>
+    </div>
+  </div>
+</div>
